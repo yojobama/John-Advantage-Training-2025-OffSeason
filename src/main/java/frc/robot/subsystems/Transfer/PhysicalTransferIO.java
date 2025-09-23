@@ -1,67 +1,52 @@
 package frc.robot.subsystems.Transfer;
 
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import frc.robot.Constants;
 import frc.robot.POM_lib.Motors.POMSparkMax;
-import java.util.function.BooleanSupplier;;
+import frc.robot.POM_lib.sensors.POMDigitalInput;
+
+;
 
 public class PhysicalTransferIO implements TransferIO {
-    private final POMSparkMax motor;
-    private RelativeEncoder encoder; // I don't know if this bloody thing is needed.
-    private final SparkMaxConfig config = new SparkMaxConfig();
+    private final POMSparkMax m_TransferMotor;
+    private final SparkMaxConfig m_TransferMotorConfig = new SparkMaxConfig();
+    private final POMDigitalInput m_InputThingy;
 
     public PhysicalTransferIO() {
-        motor = new POMSparkMax(Constants.s_TRANSFER_CONSTANTS.kTransferMotorID, MotorType.kBrushless);
-        encoder = motor.getEncoder();
-        config.idleMode(IdleMode.kCoast);
-        motor.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
-
-        encoder.setPosition(0);
+        m_TransferMotor = new POMSparkMax(Constants.s_TRANSFER_CONSTANTS.kTransferMotorID, MotorType.kBrushless);
+        m_TransferMotorConfig.idleMode(IdleMode.kCoast);
+        m_TransferMotor.configure(m_TransferMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+        m_InputThingy = new POMDigitalInput(Constants.s_TRANSFER_CONSTANTS.kTransferSensorID);
     }
 
     @Override
     public void updateInputs(TransferIOInputs inputs) {
-        inputs.velocity = motor.getEncoder().getVelocity();
-        inputs.voltage = (motor.getAppliedOutput() * motor.getBusVoltage());
-        inputs.transferSensorInput = motor.getReverseLimitSwitch().isPressed();
-
-        resetEncoder();
-        // Logger.recordOutput("Transfer/Spark FW Switch",
-        // motor.getForwardLimitSwitch().isPressed());
-    }
-
-    private void resetEncoder() {
-        encoder.setPosition(0);
+        inputs.velocity = m_TransferMotor.getEncoder().getVelocity();
+        inputs.voltage = (m_TransferMotor.getAppliedOutput() * m_TransferMotor.getBusVoltage());
+        inputs.transferSensorInput = m_TransferMotor.getReverseLimitSwitch().isPressed();
     }
 
     @Override
     public void setSpeed(double speed) {
-        motor.set(speed);
+        m_TransferMotor.set(speed);
     }
 
     @Override
     public void setVoltage(double voltage) {
-        motor.setVoltage(voltage);
+        m_TransferMotor.setVoltage(voltage);
     }
 
     public void stopMotor() {
-        motor.stopMotor();
+        m_TransferMotor.stopMotor();
     }
 
     @Override
     public boolean isCoralIn() {
-        return motor.getReverseLimitSwitch().isPressed();
-    }
-
-    public double getPosition() {
-        return encoder.getPosition();
+        return m_InputThingy.get();
     }
 }
