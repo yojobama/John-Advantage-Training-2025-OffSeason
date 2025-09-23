@@ -24,6 +24,11 @@ public final class Constants {
   public static final Mode simMode = Mode.SIM;
   public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
 
+    public static class s_TRANSFER_CONSTANTS {
+        public static final double kTransferSpeed = 0.5;
+        public static final int kTransferSensorID = 0;
+        public static final int kTransferMotorID = 0;
+    }
 
   public static enum Mode {
     /** Running on a real robot. */
