@@ -21,7 +21,9 @@ public class TransferSubsystem extends SubsystemBase {
 
     public Command intakeUntilCoralDetected()
     {
-        return Commands.runOnce(() -> getTransferIO().setSpeed(Constants.s_TRANSFER_CONSTANTS.kTransferSpeed), this)
-                .andThen(() -> Commands.waitUntil(getTransferIO()::isCoralIn).andThen(() -> getTransferIO().setSpeed(0.0), this), this);
+        return Commands.runEnd(() -> getTransferIO().setSpeed(Constants.s_TRANSFER_CONSTANTS.kTransferSpeed),
+                        () -> getTransferIO().setSpeed(0.0),
+                        this)
+                .until(() -> m_TransferIO.isCoralIn());
     }
 }
