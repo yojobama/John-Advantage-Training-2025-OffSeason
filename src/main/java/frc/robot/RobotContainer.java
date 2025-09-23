@@ -23,6 +23,10 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.POM_lib.Joysticks.PomXboxController;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.TransferCommands;
+import frc.robot.subsystems.Transfer.PhysicalTransferIO;
+import frc.robot.subsystems.Transfer.TransferIO;
+import frc.robot.subsystems.Transfer.TransferSubsystem;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon;
@@ -48,6 +52,8 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 public class RobotContainer {
         // Subsystems
         private final Drive drive;
+
+        private final TransferSubsystem transferSubsystem = new TransferSubsystem(new PhysicalTransferIO());
 
         // Controller
         private final PomXboxController driverController = new PomXboxController(0);
@@ -157,6 +163,7 @@ public class RobotContainer {
                                                 () -> driverController.getLeftY() * 0.27,
                                                 () -> driverController.getLeftX() * 0.27,
                                                 () -> driverController.getRightX() * 0.23));
+                driverController.b().whileTrue(transferSubsystem.intakeUntilCoralDetected());
                 // driverController.x().onTrue(Commands.runOnce(() ->
                 // moduleFL.setTurnPosition(new Rotation2d(Math.PI))));
                 // driverController.b().onTrue(
