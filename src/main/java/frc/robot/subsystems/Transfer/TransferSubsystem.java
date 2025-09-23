@@ -20,7 +20,7 @@ public class TransferSubsystem {
     }
 
     // a command to set the bloody voltage
-    public Command setBloodyVoltage(double voltage, BooleanSupplier limitSwitch) {
+    public Command setTheBloodyVoltage(double voltage, BooleanSupplier limitSwitch) {
         return Commands.runOnce(() -> m_TransferIO.setVoltage(voltage))
                 .until(limitSwitch)
                 .andThen(() -> m_TransferIO.stopMotor());
