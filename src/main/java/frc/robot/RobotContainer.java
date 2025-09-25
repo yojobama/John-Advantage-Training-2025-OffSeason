@@ -24,6 +24,8 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.POM_lib.Joysticks.PomXboxController;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.TransferCommands;
+import frc.robot.subsystems.Lift.LiftSubsystem;
+import frc.robot.subsystems.Lift.PhysicalLiftIO;
 import frc.robot.subsystems.Transfer.PhysicalTransferIO;
 import frc.robot.subsystems.Transfer.TransferIO;
 import frc.robot.subsystems.Transfer.TransferSubsystem;
@@ -54,6 +56,7 @@ public class RobotContainer {
         private final Drive drive;
 
         private final TransferSubsystem transferSubsystem = new TransferSubsystem(new PhysicalTransferIO());
+        private final LiftSubsystem liftSubsystem = new LiftSubsystem(new PhysicalLiftIO(() -> false)); // assume this is false for now, ask Gil-li later
 
         // Controller
         private final PomXboxController driverController = new PomXboxController(0);
