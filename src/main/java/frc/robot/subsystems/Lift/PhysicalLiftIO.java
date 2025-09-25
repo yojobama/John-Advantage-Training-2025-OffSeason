@@ -63,7 +63,7 @@ public class PhysicalLiftIO implements ILiftIO {
     }
 
     @Override
-    public void updateInputs(ElevatorIOInputs inputs) {
+    public void updateInputs(LiftIOInputs inputs) {
         inputs.motorConnected = true /* turnConnectedDebouncer.calculate(sparkStickyFault) */;
         inputs.elevatorVelocity = encoder.getVelocity();
         inputs.elevatorPosition = encoder.getPosition();

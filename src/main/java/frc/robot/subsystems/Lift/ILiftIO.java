@@ -7,8 +7,7 @@ import java.util.function.BooleanSupplier;
 public interface ILiftIO {
 
     @AutoLog
-    public static class ElevatorIOInputs {
-
+    public static class LiftIOInputs {
         boolean motorConnected = false;
         double elevatorVelocity = 0.0;
         double elevatorPosition = 0.0;
@@ -16,7 +15,7 @@ public interface ILiftIO {
         boolean foldSwitch = false;
     }
 
-    public default void updateInputs(ElevatorIOInputs inputs) {
+    public default void updateInputs(LiftIOInputs inputs) {
     }
 
     public default void setSpeed(double speed) {
